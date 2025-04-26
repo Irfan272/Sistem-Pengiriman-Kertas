@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Department extends Model
 {
     use HasFactory;
+
+    protected $fillable =[
+        'nama'
+    ];
+
+    public function supir(){
+        return $this->hasMany(Supir::class);
+    }
+
 }

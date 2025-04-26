@@ -1,0 +1,38 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('pengiriman_details', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('pengiriman_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('kertas_id')->constrained()->cascadeOnDelete();
+            $table->integer('tonase_kg');
+            $table->integer('ritase');
+            $table->string('lokasi');
+            $table->foreignId('user_1')->nullable()->constrained('users')->cascadeOnDelete();
+            $table->string('approval_1')->nullable();
+            $table->string('remaks_1')->nullable();
+            $table->foreignId('user_2')->nullable()->constrained('users')->cascadeOnDelete();
+            $table->string('approval_2')->nullable();
+            $table->string('remaks_2')->nullable();
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('pengiriman_details');
+    }
+};

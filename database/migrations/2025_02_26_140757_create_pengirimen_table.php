@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('pengirimen', function (Blueprint $table) {
             $table->id();
             $table->foreignId('supir_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('pengecekan_mobil_id')->constrained()->cascadeOnDelete();
             $table->string('shift');
             $table->integer('total_tonase');
             $table->integer('total_ritase');
