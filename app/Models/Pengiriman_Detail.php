@@ -17,12 +17,7 @@ class Pengiriman_Detail extends Model
         'tonase_kg',
         'ritase',
         'lokasi',
-        'user_1',
-        'approval_1',
-        'remaks_1',
-        'user_2',
-        'approval_2',
-        'remaks_2',
+       
     ];
 
     // Relasi ke model Pengiriman

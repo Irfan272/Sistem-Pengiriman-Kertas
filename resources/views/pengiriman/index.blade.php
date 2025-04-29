@@ -75,8 +75,8 @@
                                                     <td style="text-align: left">
                                                         <a href="/pengiriman/view/{{ $e->id }}"
                                                             class="btn btn-primary btn-xs"><i class="fa fa-eye"></i> </a>
-                                                        <a href="/pengiriman/edit/{{ $e->id }}"
-                                                            class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> </a>
+                                                            <a href="{{ route('pengiriman.edit', $e->id) }}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> </a>
+
                                                         <form action="/pengiriman/delete/{{ $e->id }}"
                                                             method="POST" class="d-inline">
                                                             @csrf

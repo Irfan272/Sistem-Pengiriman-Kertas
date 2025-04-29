@@ -111,13 +111,13 @@
                                                         class="btn btn-primary btn-xs"><i class="fa fa-eye"></i> </a>
                                                     <a href="/pengiriman/edit/{{ $e->id }}"
                                                         class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> </a>
-                                                    <form action="/pengiriman/delete/{{ $e->id }}" method="POST"
+                                                    {{-- <form action="/pengiriman/delete/{{ $e->id }}" method="POST"
                                                         class="d-inline">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-danger btn-xs"><i
                                                                 class="fa fa-trash-o"></i> </button>
-                                                    </form>
+                                                    </form> --}}
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -163,7 +163,7 @@
 
 
                                     <tbody>
-                                        @foreach ($pengirimanProses as $e)
+                                        @foreach ($pengirimanDitolak as $e)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $e->Supir->nama }}</td>
@@ -183,13 +183,13 @@
                                                         class="btn btn-primary btn-xs"><i class="fa fa-eye"></i> </a>
                                                     <a href="/pengiriman/edit/{{ $e->id }}"
                                                         class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> </a>
-                                                    <form action="/pengiriman/delete/{{ $e->id }}" method="POST"
+                                                    {{-- <form action="/pengiriman/delete/{{ $e->id }}" method="POST"
                                                         class="d-inline">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-danger btn-xs"><i
                                                                 class="fa fa-trash-o"></i> </button>
-                                                    </form>
+                                                    </form> --}}
                                                 </td>
                                             </tr>
                                         @endforeach

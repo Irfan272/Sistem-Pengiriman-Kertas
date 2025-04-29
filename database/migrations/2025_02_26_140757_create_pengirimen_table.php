@@ -21,6 +21,12 @@ return new class extends Migration
             $table->date('tanggal_pengiriman');
             $table->timestamp('jam_masuk');
             $table->timestamp('jam_keluar');
+            $table->foreignId('user_1')->nullable()->constrained('users')->cascadeOnDelete();
+            $table->string('status_approval_1')->nullable();
+            $table->string('remaks_1')->nullable();
+            $table->foreignId('user_2')->nullable()->constrained('users')->cascadeOnDelete();
+            $table->string('status_approval_2')->nullable();
+            $table->string('remaks_2')->nullable();
             $table->string('status');
             $table->timestamps();
         });

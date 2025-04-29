@@ -57,22 +57,24 @@ Route::patch('/kertas/update/{id}', [App\Http\Controllers\KertasController::clas
 Route::delete('/kertas/delete/{id}', [App\Http\Controllers\KertasController::class, 'delete']);
 
 // Pengecekan Mobil
-Route::get('/pengecekan', [App\Http\Controllers\PengecekanMobilController::class, 'index']);
+Route::get('/pengecekan', [App\Http\Controllers\PengecekanMobilController::class, 'index'])->name('pengecekan.index');
 Route::get('/pengecekan/create', [App\Http\Controllers\PengecekanMobilController::class, 'create']);
 Route::post('/pengecekan/store', [App\Http\Controllers\PengecekanMobilController::class, 'store']);
 Route::get('/pengecekan/view/{id}', [App\Http\Controllers\PengecekanMobilController::class, 'view']);
-Route::get('/pengecekan/edit/{id}', [App\Http\Controllers\PengecekanMobilController::class, 'edit']);
-Route::patch('/pengecekan/update/{id}', [App\Http\Controllers\PengecekanMobilController::class, 'update']);
+Route::get('/pengecekan/edit/{id}', [App\Http\Controllers\PengecekanMobilController::class, 'edit'])->name('pengecekan.edit');
+Route::patch('/pengecekan/update/{id}', [App\Http\Controllers\PengecekanMobilController::class, 'update'])->name('pengecekan.update');
 Route::delete('/pengecekan/delete/{id}', [App\Http\Controllers\PengecekanMobilController::class, 'delete']);
 
 // Pengiriman
-Route::get('/pengiriman', [App\Http\Controllers\PengirimanController::class, 'index']);
+Route::get('/pengiriman', [App\Http\Controllers\PengirimanController::class, 'index'])->name('pengiriman.index');
 Route::get('/pengiriman/create', [App\Http\Controllers\PengirimanController::class, 'create']);
 Route::post('/pengiriman/store', [App\Http\Controllers\PengirimanController::class, 'store']);
 Route::get('/pengiriman/view/{id}', [App\Http\Controllers\PengirimanController::class, 'view']);
-Route::get('/pengiriman/edit/{id}', [App\Http\Controllers\PengirimanController::class, 'edit']);
-Route::patch('/pengiriman/update/{id}', [App\Http\Controllers\PengirimanController::class, 'update']);
+Route::get('/pengiriman/edit/{id}', [App\Http\Controllers\PengirimanController::class, 'edit'])->name('pengiriman.edit');
+Route::patch('/pengiriman/update/{id}', [App\Http\Controllers\PengirimanController::class, 'update'])->name('pengiriman.update');
 Route::delete('/pengiriman/delete/{id}', [App\Http\Controllers\PengirimanController::class, 'delete']);
+Route::get('/get-pengecekan-mobil', [App\Http\Controllers\PengirimanController::class, 'getPengecekanMobil']);
+
 
 Route::get('/kertas/{id}/lokasi', function ($id) {
     $kertas = App\Models\Kertas::find($id);

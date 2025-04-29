@@ -18,6 +18,12 @@ class Pengiriman extends Model
         'tanggal_pengiriman',
         'jam_masuk',
         'jam_keluar',
+        'user_1',
+        'status_approval_1',
+        'remaks_1',
+        'user_2',
+        'status_approval_2',
+        'remaks_2',
         'status'
     ];
 

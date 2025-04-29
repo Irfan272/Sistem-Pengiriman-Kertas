@@ -18,12 +18,7 @@ return new class extends Migration
             $table->integer('tonase_kg');
             $table->integer('ritase');
             $table->string('lokasi');
-            $table->foreignId('user_1')->nullable()->constrained('users')->cascadeOnDelete();
-            $table->string('approval_1')->nullable();
-            $table->string('remaks_1')->nullable();
-            $table->foreignId('user_2')->nullable()->constrained('users')->cascadeOnDelete();
-            $table->string('approval_2')->nullable();
-            $table->string('remaks_2')->nullable();
+
             $table->timestamps();
         });
     }

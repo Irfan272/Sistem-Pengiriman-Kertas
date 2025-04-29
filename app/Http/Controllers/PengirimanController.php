@@ -7,8 +7,10 @@ use App\Models\Pengecekan_Mobil;
 use App\Models\Pengiriman;
 use App\Models\Pengiriman_Detail;
 use App\Models\Supir;
+use App\Models\User;
 use Illuminate\Http\Request;
 use DB;
+use Log;
 
 class PengirimanController extends Controller
 {
@@ -22,9 +24,19 @@ class PengirimanController extends Controller
     {
         $supir = Supir::all();
         $kertas = Kertas::all();
-        $pengecekan = Pengecekan_Mobil::all();
+        $user1 = User::whereIn('role', ['Kordinator Lapangan'])->get();
+        $user2 = User::whereIn('role', ['Kepala Bagian'])->get();
 
-        return view("pengiriman.create", compact("supir", "kertas", "pengecekan"));
+        // $pengecekan = Pengecekan_Mobil::all();
+
+        return view("pengiriman.create", compact("supir", "kertas", "user1", "user2"));
+    }
+
+    public function getPengecekanMobil(Request $request)
+    {
+        $pengecekan = Pengecekan_Mobil::where('supir_id', $request->supir_id)->get();
+
+        return response()->json($pengecekan);
     }
 
 
@@ -37,6 +49,12 @@ class PengirimanController extends Controller
             'tanggal_pengiriman' => 'required|date_format:Y-m-d',
             'jam_masuk' => 'required|date_format:H:i:s',
             'jam_keluar' => 'required|date_format:H:i:s',
+            'user_1' => 'required|exists:users,id',
+            'status_approval_1' => 'required|string',
+            'remaks_1' => 'nullable|string',
+            'user_2' => 'required|exists:users,id',
+            'status_approval_2' => 'required|string',
+            'remaks_2' => 'nullable|string',
             'kertas_id' => 'required|array',
             'kertas_id.*' => 'required|exists:kertas,id',
             'tonase_kg' => 'required|array',
@@ -47,8 +65,6 @@ class PengirimanController extends Controller
             'lokasi.*' => 'required|string|max:255',
         ]);
 
-   
-
 
         DB::transaction(function () use ($request) {
 
@@ -58,7 +74,7 @@ class PengirimanController extends Controller
             $tanggal = $request->input('tanggal_pengiriman');
             $jamMasuk = $request->input('jam_masuk');
             $jamKeluar = $request->input('jam_keluar');
-    
+
             $jamMasukFull = $tanggal . ' ' . $jamMasuk;
             $jamKeluarFull = $tanggal . ' ' . $jamKeluar;
 
@@ -71,6 +87,7 @@ class PengirimanController extends Controller
                 'tanggal_pengiriman' => $request->tanggal_pengiriman,
                 'jam_masuk' => $jamMasukFull,
                 'jam_keluar' => $jamKeluarFull,
+
                 'status' => 'Menunggu',
             ]);
 
@@ -81,12 +98,7 @@ class PengirimanController extends Controller
                     'tonase_kg' => $request->tonase_kg[$index],
                     'ritase' => $request->ritase[$index],
                     'lokasi' => $request->lokasi[$index],
-                    'user_1' => auth()->id(),
-                    'approval_1' => null,
-                    'remaks_1' => null,
-                    'user_2' => null,
-                    'approval_2' => null,
-                    'remaks_2' => null,
+
                 ]);
             }
         });
@@ -97,11 +109,18 @@ class PengirimanController extends Controller
 
     public function edit($id)
     {
+        $pengiriman = Pengiriman::findOrFail($id);
         $supir = Supir::all();
-        $cek = Pengecekan_Mobil::findOrFail($id);
-
-        return view("pengecekan.edit", compact("supir", "cek"));
+        $kertas = Kertas::all();
+        $user1 = User::whereIn('role', ['Kordinator Lapangan'])->get();
+        $user2 = User::whereIn('role', ['Kepala Bagian'])->get();
+        $details = Pengiriman_Detail::where('pengiriman_id', $pengiriman->id)->get();
+    
+        return view("pengiriman.edit", compact("pengiriman", "supir", "kertas", "user1", "user2", "details"));
     }
+    
+
+
     public function update(Request $request, $id)
     {
         $request->validate([
