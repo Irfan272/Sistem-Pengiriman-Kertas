@@ -34,10 +34,25 @@ class PengirimanController extends Controller
 
     public function getPengecekanMobil(Request $request)
     {
-        $pengecekan = Pengecekan_Mobil::where('supir_id', $request->supir_id)->get();
+        $pengecekan = collect(); // kosongkan dulu
+
+        // Jika ada selected_id dari pengiriman sebelumnya
+        if ($request->filled('selected_id')) {
+            $existing = Pengecekan_Mobil::where('id', $request->selected_id)->first();
+            if ($existing) {
+                $pengecekan->push($existing); // masukkan ke dalam koleksi hasil
+            }
+        }
+
+        // Jika TIDAK ada selected_id, atau sedang ganti supir, maka ambil berdasarkan supir
+        if (!$request->filled('selected_id') && $request->filled('supir_id')) {
+            $pengecekan = Pengecekan_Mobil::where('supir_id', $request->supir_id)->get();
+        }
 
         return response()->json($pengecekan);
     }
+
+
 
 
     public function store(Request $request)
@@ -50,10 +65,10 @@ class PengirimanController extends Controller
             'jam_masuk' => 'required|date_format:H:i:s',
             'jam_keluar' => 'required|date_format:H:i:s',
             'user_1' => 'required|exists:users,id',
-            'status_approval_1' => 'required|string',
+            'status_approval_1' => 'nullable|string',
             'remaks_1' => 'nullable|string',
             'user_2' => 'required|exists:users,id',
-            'status_approval_2' => 'required|string',
+            'status_approval_2' => 'nullable|string',
             'remaks_2' => 'nullable|string',
             'kertas_id' => 'required|array',
             'kertas_id.*' => 'required|exists:kertas,id',
@@ -87,6 +102,8 @@ class PengirimanController extends Controller
                 'tanggal_pengiriman' => $request->tanggal_pengiriman,
                 'jam_masuk' => $jamMasukFull,
                 'jam_keluar' => $jamKeluarFull,
+                'user_1' => $request->user_1,
+                'user_2' => $request->user_2,
 
                 'status' => 'Menunggu',
             ]);
@@ -112,80 +129,102 @@ class PengirimanController extends Controller
         $pengiriman = Pengiriman::findOrFail($id);
         $supir = Supir::all();
         $kertas = Kertas::all();
+        $pengecekan = Pengecekan_Mobil::all();
         $user1 = User::whereIn('role', ['Kordinator Lapangan'])->get();
         $user2 = User::whereIn('role', ['Kepala Bagian'])->get();
         $details = Pengiriman_Detail::where('pengiriman_id', $pengiriman->id)->get();
-    
-        return view("pengiriman.edit", compact("pengiriman", "supir", "kertas", "user1", "user2", "details"));
+
+        return view("pengiriman.edit", compact("pengiriman", "supir", "kertas", "user1", "user2", "details", "pengecekan"));
     }
-    
+
 
 
     public function update(Request $request, $id)
     {
         $request->validate([
-            'supir_id' => 'required',
-            'plat_mobil' => 'required',
-            'tanggal_pengecekan' => 'required|date',
-            'shift_pengecekan' => 'required',
-            'alarm' => 'required|boolean',
-            'lampu_penerangan' => 'required|boolean',
-            'lampu_rem' => 'required|boolean',
-            'rem' => 'required|boolean',
-            'sen_kanan' => 'required|boolean',
-            'sen_kiri' => 'required|boolean',
-            'sen_klakson' => 'required|boolean',
-            'safety_belt' => 'required|boolean',
-            'bukti_video' => 'nullable|file|mimes:mp4,avi,mov|max:10240', // 10MB, nullable agar tidak wajib
+            'supir_id' => 'required|exists:supirs,id',
+            'pengecekan_mobil_id' => 'required|exists:pengecekan_mobils,id',
+            'shift' => 'required|string',
+            'tanggal_pengiriman' => 'required|date_format:Y-m-d',
+            'jam_masuk' => 'required|date_format:H:i:s',
+            'jam_keluar' => 'required|date_format:H:i:s',
+            'user_1' => 'required|exists:users,id',
+            'status_approval_1' => 'nullable|string',
+            'remaks_1' => 'nullable|string',
+            'user_2' => 'required|exists:users,id',
+            'status_approval_2' => 'nullable|string',
+            'remaks_2' => 'nullable|string',
+            'kertas_id' => 'required|array',
+            'kertas_id.*' => 'required|exists:kertas,id',
+            'tonase_kg' => 'required|array',
+            'tonase_kg.*' => 'required|numeric',
+            'ritase' => 'required|array',
+            'ritase.*' => 'required|numeric',
+            'lokasi' => 'required|array',
+            'lokasi.*' => 'required|string|max:255',
         ]);
 
-        // Ambil data yang akan diupdate
-        $pengecekan = Pengecekan_Mobil::findOrFail($id);
 
-        // Cek apakah ada video baru diunggah
-        if ($request->hasFile('bukti_video')) {
-            // Simpan video baru
-            $videoPath = $request->file('bukti_video')->store('videos', 'public');
+        DB::transaction(function () use ($request, $id) {
+            $pengiriman = Pengiriman::findOrFail($id);
 
-            // Hapus video lama jika ada
-            if ($pengecekan->bukti_video) {
-                Storage::disk('public')->delete($pengecekan->bukti_video);
+            $totalTonase = array_sum($request->tonase_kg);
+            $totalRitase = array_sum($request->ritase);
+
+            $tanggal = $request->input('tanggal_pengiriman');
+
+            $status_approval_1 =  $request->input('status_approval_1');
+            $status_approval_2 =  $request->input('status_approval_2');
+
+         
+
+            if ($status_approval_1 === 'Reject' || $status_approval_2 === 'Reject') {
+                $status = 'Ditolak';
+            } elseif ($status_approval_1 === 'Approve' && $status_approval_2 === 'Approve') {
+                $status = 'Selesai';
+            } else {
+                $status = 'Menunggu';
             }
-        } else {
-            // Gunakan video lama jika tidak ada yang baru
-            $videoPath = $pengecekan->bukti_video;
-        }
+            
 
-        // Cek apakah semua checklist bernilai true
-        $status = $request->input('alarm') &&
-            $request->input('lampu_penerangan') &&
-            $request->input('lampu_rem') &&
-            $request->input('rem') &&
-            $request->input('sen_kanan') &&
-            $request->input('sen_kiri') &&
-            $request->input('sen_klakson') &&
-            $request->input('safety_belt');
 
-        // Update data di database
-        $pengecekan->update([
-            'supir_id' => $request->input('supir_id'),
-            'plat_mobil' => $request->input('plat_mobil'),
-            'tanggal_pengecekan' => $request->input('tanggal_pengecekan'),
-            'shift_pengecekan' => $request->input('shift_pengecekan'),
-            'alarm' => $request->input('alarm'),
-            'lampu_penerangan' => $request->input('lampu_penerangan'),
-            'lampu_rem' => $request->input('lampu_rem'),
-            'rem' => $request->input('rem'),
-            'sen_kanan' => $request->input('sen_kanan'),
-            'sen_kiri' => $request->input('sen_kiri'),
-            'sen_klakson' => $request->input('sen_klakson'),
-            'safety_belt' => $request->input('safety_belt'),
-            'bukti_video' => $videoPath,
-            'status' => $status,
-        ]);
 
-        return redirect('/pengecekan')->with('status', 'Data Berhasil Diedit');
+            $pengiriman->update([
+                'supir_id' => $request->supir_id,
+                'pengecekan_mobil_id' => $request->pengecekan_mobil_id,
+                'shift' => $request->shift,
+                'total_tonase' => $totalTonase,
+                'total_ritase' => $totalRitase,
+                'tanggal_pengiriman' => $tanggal,
+                'jam_masuk' => $request->jam_masuk,
+                'jam_keluar' => $request->jam_keluar,
+                'user_1' => $request->user_1,
+                'status_approval_1' => $request->status_approval_1,
+                'remaks_1' => $request->remaks_1,
+                'user_2' => $request->user_2,
+                'status_approval_2' => $request->status_approval_2,
+                'remaks_2' => $request->remaks_2,
+
+                'status' => $status,
+            ]);
+
+            // Hapus semua detail lama lalu tambahkan ulang
+            Pengiriman_Detail::where('pengiriman_id', $pengiriman->id)->delete();
+
+            foreach ($request->kertas_id as $index => $kertas_id) {
+                Pengiriman_Detail::create([
+                    'pengiriman_id' => $pengiriman->id,
+                    'kertas_id' => $kertas_id,
+                    'tonase_kg' => $request->tonase_kg[$index],
+                    'ritase' => $request->ritase[$index],
+                    'lokasi' => $request->lokasi[$index],
+                ]);
+            }
+        });
+
+        return redirect('/pengiriman')->with('status', 'Data Berhasil Diedit');
     }
+
 
 
 

@@ -31,7 +31,7 @@ class Pengiriman extends Model
         return $this->belongsTo(Supir::class);
     }
 
-    public function pengecekan(){
+    public function Pengecekan(){
         return $this->belongsTo(Pengecekan_Mobil::class);
     }
 }

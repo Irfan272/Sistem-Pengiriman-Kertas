@@ -12,8 +12,10 @@
             </div>
 
             <div class="col-md-12 col-sm-12 ">
-                <a href="/pengiriman/create" class="btn btn-success pull-right"><i class="fa fa-plus"></i> Tambah
-                </a>
+                @if (Auth::guard('user')->user()->role == 'Operator')
+                    <a href="/pengiriman/create" class="btn btn-success pull-right"><i class="fa fa-plus"></i> Tambah
+                    </a>
+                @endif
                 <div class="x_panel">
                     <div class="x_title">
 
@@ -75,15 +77,17 @@
                                                     <td style="text-align: left">
                                                         <a href="/pengiriman/view/{{ $e->id }}"
                                                             class="btn btn-primary btn-xs"><i class="fa fa-eye"></i> </a>
-                                                            <a href="{{ route('pengiriman.edit', $e->id) }}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> </a>
-
-                                                        <form action="/pengiriman/delete/{{ $e->id }}"
-                                                            method="POST" class="d-inline">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="btn btn-danger btn-xs"><i
-                                                                    class="fa fa-trash-o"></i> </button>
-                                                        </form>
+                                                        <a href="{{ route('pengiriman.edit', $e->id) }}"
+                                                            class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> </a>
+                                                        @if (Auth::guard('user')->user()->role == 'Operator')
+                                                            <form action="/pengiriman/delete/{{ $e->id }}"
+                                                                method="POST" class="d-inline">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit" class="btn btn-danger btn-xs"><i
+                                                                        class="fa fa-trash-o"></i> </button>
+                                                            </form>
+                                                        @endif
                                                     </td>
                                                 </tr>
                                             @endforeach

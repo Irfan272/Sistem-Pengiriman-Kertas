@@ -39,8 +39,8 @@ class Pengecekan_Mobil extends Model
     }
 
     
-    public function pengiriman(){
-        return $this->hasMany(Pengiriman_Detail::class);
+    public function Pengiriman(){
+        return $this->hasMany(Pengiriman::class);
     }
 }
 

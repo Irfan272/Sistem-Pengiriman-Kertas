@@ -19,8 +19,8 @@ return new class extends Migration
             $table->integer('total_tonase');
             $table->integer('total_ritase');
             $table->date('tanggal_pengiriman');
-            $table->timestamp('jam_masuk');
-            $table->timestamp('jam_keluar');
+            $table->time('jam_masuk');
+            $table->time('jam_keluar');
             $table->foreignId('user_1')->nullable()->constrained('users')->cascadeOnDelete();
             $table->string('status_approval_1')->nullable();
             $table->string('remaks_1')->nullable();
