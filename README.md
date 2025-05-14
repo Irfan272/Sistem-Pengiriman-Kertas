@@ -65,13 +65,13 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 ### Installation steps:
-1. Clone project from https://github.com/Irfan272/inventory.git
+1. Clone project from https://github.com/Irfan272/Sistem-Pengiriman-Kertas.git
 ```shell
-git clone https://github.com/Irfan272/inventory.git
+git clone https://github.com/Irfan272/Sistem-Pengiriman-Kertas.git
 ```
 2. Change directory
 ```shell
-cd inventory
+cd Sistem-Pengiriman-Kertas
 ```
 3. Install Composer Dependencies
 ```shell
@@ -89,15 +89,25 @@ cp .env.example .env
 ```shell
 php artisan key:generate
 ```
-7. Change Database to ('inventory') in .env
+7. Change Database to ('Pengiriman_Kertas') in .env
 ```Example
-DB_DATABASE=inventory
+DB_DATABASE=Pengiriman_Kertas
 ```
-8. Create database in phpMyAdmin and Import inventory.sql in folder database
+8. Create database in phpMyAdmin and Import Pengiriman_Kertas.sql in folder database
 
 9. Start apache & mysql in xampp if you using windows, and lammp if you using linux.
 
-10. Run Laravel project
+10. Run Migration Seeder Database
+```shell
+php artisan db:seed
+```
+
+10. Run Migration Seeder Database
+```shell
+php artisan db:seed
+```
+
+11. Run Laravel project
 ```shell
 php artisan serve
 ```
