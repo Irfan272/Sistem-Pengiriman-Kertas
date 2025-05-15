@@ -99,7 +99,7 @@ DB_DATABASE=Pengiriman_Kertas
 
 10. Run Migration 
 ```shell
-php artisan migration
+php artisan migrate
 ```
 
 11. Run Migration Seeder Database
