@@ -97,29 +97,18 @@ DB_DATABASE=Pengiriman_Kertas
 
 9. Start apache & mysql in xampp if you using windows, and lammp if you using linux.
 
-10. Run Migration Seeder Database
+10. Run Migration 
+```shell
+php artisan migration
+```
+
+11. Run Migration Seeder Database
 ```shell
 php artisan db:seed
 ```
 
-10. Run Migration Seeder Database
-```shell
-php artisan db:seed
-```
-
-11. Run Laravel project
+12. Run Laravel project
 ```shell
 php artisan serve
 ```
-**Default Admin for Inventory**
 
-email: admin@gmail.com
-
-password: 12345678
-
-
-**Default Kepala Gudang for Inventory**
-
-email: kepalagudang@gmail.com
-
-password: 12345678
