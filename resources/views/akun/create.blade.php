@@ -84,6 +84,7 @@
                                     <div class="col-md-6 col-sm-6">
                                         <select name="role" id="role" class="form-control selectpicker" data-live-search="true"  required='required'>
                                             <option readonly value="">Pilih Role</option>                                      
+                                            <option value="Admin">Admin</option>
                                             <option value="Operator">Operator</option>
                                             <option value="Kordinator Lapangan">Kordinator Lapangan</option>
                                             <option value="Kepala Bagian">Kepala Bagian</option>

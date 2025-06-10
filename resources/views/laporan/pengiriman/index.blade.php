@@ -46,7 +46,7 @@
                             </div>
                         
                             <div class="col-12 d-flex justify-content-end">
-                                <a href="#" onclick="exportToExcel()" class="btn btn-success me-1 mb-1">Ekspor ke Excel</a>
+                                {{-- <a href="#" onclick="exportToExcel()" class="btn btn-success me-1 mb-1">Ekspor ke Excel</a> --}}
                                 <a href="" onclick="this.href='/cetak-laporan-pengiriman/'+ document.getElementById('tanggal_awal').value +
                                 '/' + document.getElementById('tanggal_akhir').value " 
                                 target="_blank" class="btn btn-primary me-1 mb-1">Cetak</a>

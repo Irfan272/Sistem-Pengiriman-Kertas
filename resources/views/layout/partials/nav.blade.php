@@ -25,39 +25,7 @@
                     </div>
                 </li>
 
-                <!-- Ikon Pesan -->
-                <li role="presentation" class="nav-item dropdown open">
-                    <a href="javascript:;" class="dropdown-toggle info-number" aria-haspopup="true" id="messageDropdown"
-                        data-toggle="dropdown" aria-expanded="false">
-                        <i class="fa fa-envelope-o"></i>
-                        {{-- @if ($total > 0)
-                            <span class="badge bg-green">{{ $total }}</span>
-                        @endif --}}
-                    </a>
-                    <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu"
-                        aria-labelledby="messageDropdown">
-                        {{-- @foreach ($antrian as $a)
-                            <li class="nav-item">
-                                <a class="dropdown-item">
-                                    <span>
-                                        <span>Antrian Mobil Masuk: {{ $a->waktu_kedatangan }}</span>
-                                        <span>Total Unit: {{ $a->totalMobil ?? 'N/A' }}</span>
-                                    </span>
-                                    <span class="message">
-                                        Belum Dibuat DO
-                                    </span>
-                                </a>
-                            </li>
-                        @endforeach
-                        @if ($total == 0)
-                            <li class="nav-item">
-                                <a class="dropdown-item">
-                                    <span class="message">Tidak ada antrian mobil masuk.</span>
-                                </a>
-                            </li>
-                        @endif --}}
-                    </ul>
-                </li>
+         
 
 
 

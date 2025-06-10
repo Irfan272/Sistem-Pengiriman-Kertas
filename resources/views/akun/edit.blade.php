@@ -107,6 +107,8 @@
                                             <select name="role" id="role" class="form-control selectpicker"
                                                 data-live-search="true" required='required'>
                                                 <option readonly value="">Pilih Role</option>
+                                                <option @if ($b->role == 'Admin') selected @endif value="Admin">
+                                                    Admin</option>
                                                 <option @if ($b->role == 'Operator') selected @endif value="Operator">
                                                     Operator</option>
                                                 <option @if ($b->role == 'Kordinator Lapangan') selected @endif value="Kordinator Lapangan">

@@ -36,7 +36,7 @@
                         </ul>
                     </li> --}}
 
-                    @if (Auth::guard('user')->user()->role == 'Kordinator Lapangan')
+                    @if (Auth::guard('user')->user()->role == 'Admin')
                         <li><a><i class="fa fa-tachometer"></i> Master Data <span class="fa fa-chevron-down"></span></a>
                             <ul class="nav child_menu">
                                 {{-- @if (Auth::guard('user')->user()->role == 'Kordinator Lapangan') --}}
@@ -55,6 +55,7 @@
                         </li>
                     @endif
 
+                     @if (Auth::guard('user')->user()->role == 'Operator' || Auth::guard('user')->user()->role == 'Kordinator Lapangan' || Auth::guard('user')->user()->role == 'Kepala Bagian')
                     <li><a><i class="fa fa-desktop"></i> Transaksi <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
                             @if (Auth::guard('user')->user()->role == 'Operator' || Auth::guard('user')->user()->role == 'Kordinator Lapangan')
@@ -65,22 +66,20 @@
                             @endif
                         </ul>
                     </li>
+                     @endif
 
-                    <li><a><i class="fa fa-file"></i> Laporan <span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu">
-                            <li><a href="/laporan-pengecekan">Laporan Pengecekan</a></li>
-                            <li><a href="/laporan-pengiriman">Laporan Pengiriman</a></li>
+                    @if (Auth::guard('user')->user()->role == 'Admin')
+                        <li><a><i class="fa fa-file"></i> Laporan <span class="fa fa-chevron-down"></span></a>
+                            <ul class="nav child_menu">
+                                <li><a href="/laporan-pengecekan">Laporan Pengecekan</a></li>
+                                <li><a href="/laporan-pengiriman">Laporan Pengiriman</a></li>
 
-                        </ul>
+                            </ul>
 
-                    </li>
-                    <li>
-                        {{-- <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                <i class="fa fa-sign-out" aria-hidden="true"></i>  Log Out
-              </a>
-              <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                  @csrf
-              </form> --}}
+                        </li>
+                        <li>
+                    @endif
+              
                     </li>
                 </ul>
             </div>
