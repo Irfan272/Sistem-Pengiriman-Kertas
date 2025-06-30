@@ -34,23 +34,25 @@ class PengirimanController extends Controller
 
     public function getPengecekanMobil(Request $request)
     {
-        $pengecekan = collect(); // kosongkan dulu
+        $pengecekan = collect();
 
-        // Jika ada selected_id dari pengiriman sebelumnya
         if ($request->filled('selected_id')) {
-            $existing = Pengecekan_Mobil::where('id', $request->selected_id)->first();
+            $existing = Pengecekan_Mobil::with('mobil')->find($request->selected_id);
             if ($existing) {
-                $pengecekan->push($existing); // masukkan ke dalam koleksi hasil
+                $pengecekan->push($existing);
             }
         }
 
-        // Jika TIDAK ada selected_id, atau sedang ganti supir, maka ambil berdasarkan supir
         if (!$request->filled('selected_id') && $request->filled('supir_id')) {
-            $pengecekan = Pengecekan_Mobil::where('supir_id', $request->supir_id)->get();
+            $pengecekan = Pengecekan_Mobil::with('mobil')
+                ->where('supir_id', $request->supir_id)
+                ->get();
         }
+
 
         return response()->json($pengecekan);
     }
+
 
 
 
@@ -173,10 +175,10 @@ class PengirimanController extends Controller
 
             $tanggal = $request->input('tanggal_pengiriman');
 
-            $status_approval_1 =  $request->input('status_approval_1');
-            $status_approval_2 =  $request->input('status_approval_2');
+            $status_approval_1 = $request->input('status_approval_1');
+            $status_approval_2 = $request->input('status_approval_2');
 
-         
+
 
             if ($status_approval_1 === 'Reject' || $status_approval_2 === 'Reject') {
                 $status = 'Ditolak';
@@ -185,7 +187,7 @@ class PengirimanController extends Controller
             } else {
                 $status = 'Menunggu';
             }
-            
+
 
 
 
@@ -230,15 +232,20 @@ class PengirimanController extends Controller
 
     public function delete($id)
     {
-        Pengecekan_Mobil::destroy($id);
-        return redirect('/pengecekan')->with('status', 'Data Berhasil Di Hapus');
+        Pengecekan_Mobil::destroy(ids: $id);
+        return redirect('/pengiriman')->with('status', 'Data Berhasil Di Hapus');
     }
 
     public function view($id)
     {
+        $pengiriman = Pengiriman::findOrFail($id);
         $supir = Supir::all();
-        $cek = Pengecekan_Mobil::findOrFail($id);
+        $kertas = Kertas::all();
+        $pengecekan = Pengecekan_Mobil::all();
+        $user1 = User::whereIn('role', ['Kordinator Lapangan'])->get();
+        $user2 = User::whereIn('role', ['Kepala Bagian'])->get();
+        $details = Pengiriman_Detail::where('pengiriman_id', $pengiriman->id)->get();
 
-        return view("pengecekan.edit", compact("supir", "cek"));
+        return view("pengiriman.view", compact("pengiriman", "supir", "kertas", "user1", "user2", "details", "pengecekan"));
     }
 }

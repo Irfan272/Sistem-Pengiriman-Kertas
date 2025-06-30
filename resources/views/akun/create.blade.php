@@ -20,6 +20,16 @@
                     <div class="x_panel">
                         
                         <div class="x_content">
+                             @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                            @endif
+                            
                             <form class="" action="/akun/store" method="post" novalidate>
                                @csrf
                                 <span class="section">Input Data Akun</span>

@@ -48,14 +48,14 @@
                               
                                 <div class="field item form-group">
                                     <label class="col-form-label col-md-3 col-sm-3  label-align">Plat Mobil<span class="required">*</span></label>
-                                    <div class="col-md-6 col-sm-6">
-                                        <input value="{{ old('plat_mobil') }}" class="@error('plat_mobil') parsley-error @enderror form-control" data-validate-length-range="6" data-validate-words="2" name="plat_mobil" required="required" />
-                                        @error('plat_mobil')
-                                        <ul class="parsley-errors-list filled">
-                                            <li class="parsley-required">{{ $message }}</li>
-                                        </ul>   
-                                        @enderror 
-                                    </div>                                   
+                                       <div class="col-md-6 col-sm-6">
+                                        <select name="mobil_id" id="mobil_id" class="form-control selectpicker" data-live-search="true" required>
+                                            <option readonly value="">Pilih Mobil</option>
+                                            @foreach($mobil as $s)
+                                            <option value="{{ $s->id }}">{{ $s->plat_mobil }}</option>
+                                            @endforeach 
+                                        </select>
+                                    </div>                               
                                 </div>
                                 <div class="field item form-group">
                                     <label class="col-form-label col-md-3 col-sm-3  label-align">Tanggal Pengecekan<span class="required">*</span></label>

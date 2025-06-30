@@ -51,7 +51,14 @@
                             <div class="field item form-group">
                                 <label class="col-form-label col-md-3 col-sm-3 label-align">Plat Mobil <span class="required">*</span></label>
                                 <div class="col-md-6 col-sm-6">
-                                    <input value="{{ old('plat_mobil', $pengecekan->plat_mobil) }}" type="text" name="plat_mobil" class="form-control" required />
+                                    <select name="mobil_id" id="mobil_id" class="form-control" required>
+                                        <option disabled selected value="">Pilih Mobil</option>
+                                        @foreach($mobil as $s)
+                                            <option value="{{ $s->id }}" {{ old('mobil_id', $pengecekan->mobil_id) == $s->id ? 'selected' : '' }}>
+                                                {{ $s->plat_mobil }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
 

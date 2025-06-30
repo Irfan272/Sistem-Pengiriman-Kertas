@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Mobil;
 use App\Models\Pengecekan_Mobil;
 use App\Models\Supir;
 use Illuminate\Http\Request;
@@ -11,20 +12,21 @@ class PengecekanMobilController extends Controller
 {
     public function index()
     {
-        $cek = Pengecekan_Mobil::with('Supir')->get();
+        $cek = Pengecekan_Mobil::with('Supir', 'Mobil')->get();
         return view("pengecekan.index", compact("cek"));
     }
 
     public function create()
     {
         $supir = Supir::all();
-        return view("pengecekan.create", compact("supir"));
+        $mobil = Mobil::where('status', 'aktif')->get();
+        return view("pengecekan.create", compact("supir", "mobil"));
     }
     public function store(Request $request)
     {
         $request->validate([
             'supir_id' => 'required',
-            'plat_mobil' => 'required',
+            'mobil_id' => 'required',
             'tanggal_pengecekan' => 'required|date',
             'shift_pengecekan' => 'required',
             'alarm' => 'required|boolean',
@@ -64,7 +66,7 @@ class PengecekanMobilController extends Controller
         // Simpan data ke database
         Pengecekan_Mobil::create([
             'supir_id' => $request->input('supir_id'),
-            'plat_mobil' => $request->input('plat_mobil'),
+            'mobil_id' => $request->input('mobil_id'),
             'tanggal_pengecekan' => $request->input('tanggal_pengecekan'),
             'shift_pengecekan' => $request->input('shift_pengecekan'),
             'alarm' => $request->input('alarm'),
@@ -85,15 +87,16 @@ class PengecekanMobilController extends Controller
     public function edit($id)
     {
         $supir = Supir::all();
+        $mobil = Mobil::where('status', 'aktif')->get();
         $pengecekan = Pengecekan_Mobil::findOrFail($id);
 
-        return view("pengecekan.edit", compact("supir", "pengecekan"));
+        return view("pengecekan.edit", compact("supir", "pengecekan", "mobil"));
     }
     public function update(Request $request, $id)
     {
         $request->validate([
             'supir_id' => 'required',
-            'plat_mobil' => 'required',
+            'mobil_id' => 'required',
             'tanggal_pengecekan' => 'required|date',
             'shift_pengecekan' => 'required',
             'alarm' => 'required|boolean',
@@ -146,7 +149,7 @@ class PengecekanMobilController extends Controller
         // Update data di database
         $pengecekan->update([
             'supir_id' => $request->input('supir_id'),
-            'plat_mobil' => $request->input('plat_mobil'),
+            'mobil_id' => $request->input('mobil_id'),
             'tanggal_pengecekan' => $request->input('tanggal_pengecekan'),
             'shift_pengecekan' => $request->input('shift_pengecekan'),
             'alarm' => $request->input('alarm'),
@@ -176,8 +179,9 @@ class PengecekanMobilController extends Controller
     {
         $supir = Supir::all();
         $pengecekan = Pengecekan_Mobil::findOrFail($id);
+                $mobil = Mobil::where('status', 'aktif')->get();
 
-        return view("pengecekan.view", compact("supir", "pengecekan"));
+        return view("pengecekan.view", compact("supir", "pengecekan", "mobil"));
     }
 
 }

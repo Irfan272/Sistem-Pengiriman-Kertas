@@ -11,9 +11,9 @@ class Pengecekan_Mobil extends Model
     use HasFactory;
     protected $table = 'pengecekan_mobils';
 
-    protected $fillable=[
+    protected $fillable = [
         'supir_id',
-        'plat_mobil',
+        'mobil_id',
         'tanggal_pengecekan',
         'shift_pengecekan',
         'alarm',
@@ -28,18 +28,31 @@ class Pengecekan_Mobil extends Model
         'status'
     ];
 
+    public function mobil()
+    {
+        return $this->belongsTo(Mobil::class);
+    }
 
-    public function supir(){
+    public function mobilPlat()
+{
+    // relasi hanya jika ingin pakai plat_mobil sebagai key
+    return $this->belongsTo(Mobil::class, 'plat_mobil', 'plat_mobil');
+}
+
+    public function supir()
+    {
         return $this->belongsTo(Supir::class);
     }
 
- 
-    public function pengiriman_detail(){
+
+    public function pengiriman_detail()
+    {
         return $this->hasMany(Pengiriman_Detail::class);
     }
 
-    
-    public function Pengiriman(){
+
+    public function Pengiriman()
+    {
         return $this->hasMany(Pengiriman::class);
     }
 }

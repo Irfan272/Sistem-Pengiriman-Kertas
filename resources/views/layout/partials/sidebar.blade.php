@@ -41,6 +41,7 @@
                             <ul class="nav child_menu">
                                 {{-- @if (Auth::guard('user')->user()->role == 'Kordinator Lapangan') --}}
                                 <li><a href="/akun">Data Akun</a></li>
+                                <li><a href="/mobil">Data Mobil</a></li>
                                 <li><a href="/supir">Data Supir</a></li>
                                 <li><a href="/kertas">Data Kertas</a></li>
                                 {{-- <li><a href="/department">Data Department</a></li> --}}

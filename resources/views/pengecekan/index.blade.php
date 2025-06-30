@@ -66,7 +66,7 @@
                                                 <tr>
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td>{{ $e->Supir->nama }}</td>
-                                                    <td>{{ $e->plat_mobil }}</td>
+                                                    <td>{{ $e->Mobil->plat_mobil }}</td>
                                                     <td>{{ $e->tanggal_pengecekan }}</td>
                                                     <td>{{ $e->shift_pengecekan }}</td>
                                                     <td>

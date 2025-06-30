@@ -31,6 +31,14 @@ Route::get('akun/edit/{id}', [App\Http\Controllers\AkunController::class, 'edit'
 Route::patch('akun/update/{id}', [App\Http\Controllers\AkunController::class, 'update']);
 Route::delete('akun/delete/{id}', [App\Http\Controllers\AkunController::class, 'delete']);
 
+// Mobil
+Route::get('/mobil', [App\Http\Controllers\MobilController::class, 'index']);
+Route::get('/mobil/create', [App\Http\Controllers\MobilController::class, 'create']);
+Route::post('/mobil/store', [App\Http\Controllers\MobilController::class, 'store']);
+Route::get('/mobil/edit/{id}', [App\Http\Controllers\MobilController::class, 'edit']);
+Route::patch('/mobil/update/{id}', [App\Http\Controllers\MobilController::class, 'update']);
+Route::delete('/mobil/delete/{id}', [App\Http\Controllers\MobilController::class, 'delete']);
+
 
 // Department
 Route::get('/department', [App\Http\Controllers\DepartmentController::class, 'index']);

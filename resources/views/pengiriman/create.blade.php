@@ -261,7 +261,9 @@
                         data.forEach(function(pengecekan) {
                             let option = document.createElement('option');
                             option.value = pengecekan.id;
-                            option.text = pengecekan.plat_mobil + ' (' + pengecekan.status + ')';
+                           option.text = (pengecekan.mobil?.plat_mobil || 'Tanpa plat') + ' (' + pengecekan.status + ')';
+
+
                             // Sesuaikan kalau nama field bukan 'status'
                             pengecekanSelect.appendChild(option);
                         });

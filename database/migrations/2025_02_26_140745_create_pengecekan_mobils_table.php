@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('pengecekan_mobils', function (Blueprint $table) {
             $table->id();
             $table->foreignId('supir_id')->constrained()->cascadeOnDelete();
-            $table->string('plat_mobil')->unique();
+            $table->foreignId('mobil_id')->constrained('mobils')->cascadeOnDelete();
             $table->date('tanggal_pengecekan');
             $table->string('shift_pengecekan');
             $table->integer('alarm');

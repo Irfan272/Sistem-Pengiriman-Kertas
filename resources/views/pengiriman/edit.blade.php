@@ -63,7 +63,7 @@
                                         @foreach ($pengecekan as $s)
                                             <option value="{{ $s->id }}"
                                                 {{ $pengiriman->pengecekan_mobil_id == $s->id ? 'selected' : '' }}>
-                                                {{ $s->plat_mobil }}
+                                                {{ $s->Mobil->plat_mobil }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -285,34 +285,38 @@
                 lokasiInput.value = '';
             }
         }
+function loadPengecekanMobil(supirId, selectedId = null) {
+    const pengecekanSelect = document.getElementById('pengecekan_mobil_id');
+    pengecekanSelect.innerHTML = '<option value="">Pilih Pengecekan Mobil</option>';
 
-        function loadPengecekanMobil(supirId, selectedId = null) {
-            const pengecekanSelect = document.getElementById('pengecekan_mobil_id');
-            pengecekanSelect.innerHTML = '<option value="">Pilih Pengecekan Mobil</option>';
+    const url = new URL('/get-pengecekan-mobil', window.location.origin);
+    if (supirId) url.searchParams.append('supir_id', supirId);
 
-            const url = new URL('/get-pengecekan-mobil', window.location.origin);
-            if (supirId) url.searchParams.append('supir_id', supirId);
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            if (data.length) {
+                data.forEach(item => {
+                    const option = document.createElement('option');
+                    const platMobil = item.mobil?.plat_mobil || 'Plat tidak tersedia';
+                    option.value = item.id;
+                    option.text = `${platMobil} (${item.status})`;
 
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.length) {
-                        data.forEach(item => {
-                            const option = document.createElement('option');
-                            option.value = item.id;
-                            option.text = `${item.plat_mobil} (${item.status})`;
-                            if (selectedId && selectedId == item.id) {
-                                option.selected = true;
-                            }
-                            pengecekanSelect.appendChild(option);
-                        });
-                    } else {
-                        pengecekanSelect.innerHTML = '<option value="">Tidak ada pengecekan</option>';
+                    if (selectedId && selectedId == item.id) {
+                        option.selected = true;
                     }
-                    $('.selectpicker').selectpicker('refresh');
-                })
-                .catch(error => console.error('Error:', error));
-        }
+
+                    pengecekanSelect.appendChild(option);
+                });
+            } else {
+                pengecekanSelect.innerHTML = '<option value="">Tidak ada pengecekan</option>';
+            }
+
+            $('.selectpicker').selectpicker('refresh');
+        })
+        .catch(error => console.error('Error:', error));
+}
+
 
         function setCurrentTime() {
             const now = new Date();

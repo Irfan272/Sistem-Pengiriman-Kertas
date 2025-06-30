@@ -16,6 +16,16 @@ class UserSeeder extends Seeder
     {
         DB::table('users')->insert([
             [
+                'name' => 'Admin',
+                'email' => 'Admin@example.com',
+                'email_verified_at' => now(),
+                'password' => Hash::make('123456789'), // Gunakan bcrypt
+                'role' => 'Admin',
+                'remember_token' => null,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
                 'name' => 'Operator',
                 'email' => 'Operator@example.com',
                 'email_verified_at' => now(),
