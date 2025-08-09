@@ -1,6 +1,6 @@
 @extends('layout.master')
 
-@section('title', 'Data Pengecekan Mobi')
+@section('title', 'Data Pengecekan Mobil')
 
 @section('content')
 
@@ -8,7 +8,7 @@
     <div class="right_col" role="main">
         <div class="">
             <div class="top_tiles">
-                <h1>Data Pengecekan Mobi</h1>
+                <h1>Data Pengecekan Mobil</h1>
             </div>
 
             <div class="col-md-12 col-sm-12 ">

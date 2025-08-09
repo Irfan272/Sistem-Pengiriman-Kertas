@@ -25,7 +25,8 @@ class Pengecekan_Mobil extends Model
         'klakson',
         'safety_belt',
         'bukti_video',
-        'status'
+        'status',
+        'komentar'
     ];
 
     public function mobil()

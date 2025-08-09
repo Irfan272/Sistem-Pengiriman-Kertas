@@ -93,35 +93,36 @@
             <thead>
                 <tr>
                     <th>No</th>
-                                                <th>Supir</th>
-                                                <th>Shift</th>
-                                                <th>Total Tonase(KG)</th>
-                                                <th>Total Ritase</th>
-                                                <th>Jam Masuk</th>
-                                                <th>Jam Keluar</th>
-                                                {{-- <th>Status Pengecekan Mobil</th>                                    --}}
-                                                <th>Status</th>                         
+                    <th>Supir</th>
+                    <th>Shift</th>
+                    <th>Total Tonase (KG)</th>
+                    <th>Total Ritase</th>
+                    <th>Jam Masuk</th>
+                    <th>Jam Keluar</th>
+                    <th>Status</th>
+                    <th>Kerugian Terlambat (USD)</th>
+                    <th>Kerugian Duplikat (USD)</th>
+                    <th>Total Kerugian (USD)</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($pengiriman as $e)
-                <tr>
-                    <td>{{ $loop->iteration }}</td>
-                    <td>{{ $e->Supir->nama }}</td>
-                    <td>{{ $e->shift}}</td>
-                    <td>{{ $e->total_tonase }}</td>
-                    <td>{{ $e->total_ritase }}</td>
-                    <td>{{ $e->jam_masuk }}</td>
-                    <td>{{ $e->jam_keluar }}</td>
-                    {{-- <td>{{ $e->Pengecekan->status }}</td> --}}
-    
-                  
-
-
-                     <td>{{ $e->status }}</td>
+                    <tr>
+                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ $e->Supir->nama }}</td>
+                        <td>{{ $e->shift }}</td>
+                        <td>{{ $e->total_tonase }}</td>
+                        <td>{{ $e->total_ritase }}</td>
+                        <td>{{ $e->jam_masuk }}</td>
+                        <td>{{ $e->jam_keluar }}</td>
+                        <td>{{ $e->status }}</td>
+                        <td>{{ $e->kerugian_terlambat ? number_format($e->kerugian_terlambat, 2) : '-' }}</td>
+                        <td>{{ $e->kerugian_duplikasi ? number_format($e->kerugian_duplikasi, 2) : '-' }}</td>
+                        <td>{{ $e->total_kerugian ? number_format($e->total_kerugian, 2) : '-' }}</td>
                     </tr>
                 @endforeach
             </tbody>
+
         </table>
     </main>
 </body>

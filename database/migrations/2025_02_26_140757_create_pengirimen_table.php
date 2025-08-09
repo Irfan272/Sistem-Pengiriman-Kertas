@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -28,6 +27,11 @@ return new class extends Migration
             $table->string('status_approval_2')->nullable();
             $table->string('remaks_2')->nullable();
             $table->string('status');
+            $table->integer('kerugian_terlambat')->nullable();
+            $table->integer('kerugian_duplikasi')->nullable();
+            $table->integer('total_kerugian')->nullable();
+            $table->string('status_pengiriman')->default('-');
+
             $table->timestamps();
         });
     }

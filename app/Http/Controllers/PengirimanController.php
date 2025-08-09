@@ -99,6 +99,7 @@ class PengirimanController extends Controller
                 'supir_id' => $request->supir_id,
                 'pengecekan_mobil_id' => $request->pengecekan_mobil_id,
                 'shift' => $request->shift,
+                'status_pengiriman' => 'Dalam Perjalanan',
                 'total_tonase' => $totalTonase,
                 'total_ritase' => $totalRitase,
                 'tanggal_pengiriman' => $request->tanggal_pengiriman,
@@ -156,6 +157,7 @@ class PengirimanController extends Controller
             'user_2' => 'required|exists:users,id',
             'status_approval_2' => 'nullable|string',
             'remaks_2' => 'nullable|string',
+            'status_pengiriman' => 'required|string|in:Tepat Waktu,Terlambat', // ✅ ambil dari select option
             'kertas_id' => 'required|array',
             'kertas_id.*' => 'required|exists:kertas,id',
             'tonase_kg' => 'required|array',
@@ -166,19 +168,17 @@ class PengirimanController extends Controller
             'lokasi.*' => 'required|string|max:255',
         ]);
 
-
         DB::transaction(function () use ($request, $id) {
             $pengiriman = Pengiriman::findOrFail($id);
 
             $totalTonase = array_sum($request->tonase_kg);
             $totalRitase = array_sum($request->ritase);
 
-            $tanggal = $request->input('tanggal_pengiriman');
+            $tanggal = $request->tanggal_pengiriman;
 
-            $status_approval_1 = $request->input('status_approval_1');
-            $status_approval_2 = $request->input('status_approval_2');
-
-
+            // Status utama
+            $status_approval_1 = $request->status_approval_1;
+            $status_approval_2 = $request->status_approval_2;
 
             if ($status_approval_1 === 'Reject' || $status_approval_2 === 'Reject') {
                 $status = 'Ditolak';
@@ -188,9 +188,33 @@ class PengirimanController extends Controller
                 $status = 'Menunggu';
             }
 
+            // ✅ Status_pengiriman dari form, bukan hitung otomatis
+            $statusPengiriman = $request->status_pengiriman;
+            $kerugianTerlambat = ($statusPengiriman === 'Terlambat') ? $totalTonase * 20 : 0;
 
+            // Cek duplikasi internal
+            $detailSet = [];
+            $duplikasiInternal = false;
+            foreach ($request->kertas_id as $index => $kertas_id) {
+                $key = $kertas_id . '-' . $request->lokasi[$index];
+                if (isset($detailSet[$key])) {
+                    $duplikasiInternal = true;
+                    break;
+                }
+                $detailSet[$key] = true;
+            }
 
+            // Cek duplikasi eksternal
+            $duplikatEksternal = Pengiriman::where('id', '!=', $pengiriman->id)
+                ->where('supir_id', $request->supir_id)
+                ->where('pengecekan_mobil_id', $request->pengecekan_mobil_id)
+                ->whereDate('tanggal_pengiriman', $tanggal)
+                ->exists();
 
+            $kerugianDuplikasi = ($duplikatEksternal || $duplikasiInternal) ? $totalTonase * 20 : 0;
+            $totalKerugian = $kerugianTerlambat + $kerugianDuplikasi;
+
+            // Update data utama
             $pengiriman->update([
                 'supir_id' => $request->supir_id,
                 'pengecekan_mobil_id' => $request->pengecekan_mobil_id,
@@ -206,13 +230,17 @@ class PengirimanController extends Controller
                 'user_2' => $request->user_2,
                 'status_approval_2' => $request->status_approval_2,
                 'remaks_2' => $request->remaks_2,
-
                 'status' => $status,
+
+                // Ambil dari select option
+                'status_pengiriman' => $statusPengiriman,
+                'kerugian_terlambat' => $kerugianTerlambat,
+                'kerugian_duplikasi' => $kerugianDuplikasi,
+                'total_kerugian' => $totalKerugian,
             ]);
 
-            // Hapus semua detail lama lalu tambahkan ulang
+            // Hapus detail lama & simpan baru
             Pengiriman_Detail::where('pengiriman_id', $pengiriman->id)->delete();
-
             foreach ($request->kertas_id as $index => $kertas_id) {
                 Pengiriman_Detail::create([
                     'pengiriman_id' => $pengiriman->id,
@@ -226,6 +254,8 @@ class PengirimanController extends Controller
 
         return redirect('/pengiriman')->with('status', 'Data Berhasil Diedit');
     }
+
+
 
 
 

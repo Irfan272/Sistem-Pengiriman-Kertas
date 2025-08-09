@@ -28,7 +28,6 @@
                             </div>
                         @endif
 
-
                         <h2>Tabel Data <small>Pengiriman</small></h2>
                         <ul class="nav navbar-right panel_toolbox">
                             <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
@@ -51,12 +50,14 @@
                                                 <th>Total Ritase</th>
                                                 <th>Jam Masuk</th>
                                                 <th>Jam Keluar</th>
-                                                {{-- <th>Status Pengecekan Mobil</th>                                    --}}
                                                 <th>Status</th>
+                                                <th>Status Pengiriman</th>
+                                                <th>Kerugian Terlambat (USD)</th>
+                                                <th>Kerugian Duplikasi (USD)</th>
+                                                <th>Total Kerugian (USD)</th>
                                                 <th style="width: 25%">Action</th>
                                             </tr>
                                         </thead>
-
 
                                         <tbody>
                                             @foreach ($pengiriman as $e)
@@ -68,12 +69,11 @@
                                                     <td>{{ $e->total_ritase }}</td>
                                                     <td>{{ $e->jam_masuk }}</td>
                                                     <td>{{ $e->jam_keluar }}</td>
-                                                    {{-- <td>{{ $e->Pengecekan->status }}</td> --}}
-
-
-
-
                                                     <td>{{ $e->status }}</td>
+                                                    <td>{{ $e->status_pengiriman }}</td>
+                                                    <td>${{ number_format($e->kerugian_terlambat, 2) }}</td>
+                                                    <td>${{ number_format($e->kerugian_duplikasi, 2) }}</td>
+                                                    <td>${{ number_format($e->total_kerugian, 2) }}</td>
                                                     <td style="text-align: left">
                                                         <a href="/pengiriman/view/{{ $e->id }}"
                                                             class="btn btn-primary btn-xs"><i class="fa fa-eye"></i> </a>
@@ -99,4 +99,4 @@
                     </div>
                 </div>
             </div>
-        @endsection
+@endsection

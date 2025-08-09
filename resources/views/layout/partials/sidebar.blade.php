@@ -20,21 +20,7 @@
                     </li>
 
                     </li>
-                    {{-- <li><a><i class="fa fa-tachometer"></i> Master Data <span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu">
-                            @if (Auth::guard('user')->user()->role == 'Operator')
-                                <li><a href="/akun">Data Akun</a></li>
-                                <li><a href="/pengecekan">Pengecekan Mobil</a></li>
-                            @elseif(Auth::guard('user')->user()->role ==  'Kordinator Lapangan')
-                                <li><a href="/akun">Data Akun</a></li>
-                                <li><a href="/department">Data Department</a></li>
-                                <li><a href="/supir">Data Supir</a></li>
-                                <li><a href="/kertas">Data Kertas</a></li>
-                               
-                                <li><a href="/pengiriman">Pengiriman</a></li>
-                            @endif
-                        </ul>
-                    </li> --}}
+
 
                     @if (Auth::guard('user')->user()->role == 'Admin')
                         <li><a><i class="fa fa-tachometer"></i> Master Data <span class="fa fa-chevron-down"></span></a>
@@ -44,14 +30,8 @@
                                 <li><a href="/mobil">Data Mobil</a></li>
                                 <li><a href="/supir">Data Supir</a></li>
                                 <li><a href="/kertas">Data Kertas</a></li>
-                                {{-- <li><a href="/department">Data Department</a></li> --}}
-
-                                {{-- @elseif(Auth::guard('user')->user()->role == 'Kepala Bagian')
-                                    
-                                    <li><a href="/pengecekan">Pengecekan Mobil</a></li>
-
-                                    <li><a href="/pengiriman">Pengiriman</a></li>
-                                @endif --}}
+                                <li><a href="/pengecekan-histori">Data Pengecekan</a></li>
+                      
                             </ul>
                         </li>
                     @endif

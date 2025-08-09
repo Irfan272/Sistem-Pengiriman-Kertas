@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('supirs', function (Blueprint $table) {
             $table->id();
-            $table->string('nik')->unique();
+            $table->string('nik');
             $table->string('nama');
             $table->string('alamat');
             $table->foreignId('department_id')->constrained()->cascadeOnDelete();

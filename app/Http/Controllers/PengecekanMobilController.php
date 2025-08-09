@@ -16,6 +16,12 @@ class PengecekanMobilController extends Controller
         return view("pengecekan.index", compact("cek"));
     }
 
+    public function indexHistory()
+    {
+        $cek = Pengecekan_Mobil::with('Supir', 'Mobil')->get();
+        return view("pengecekan.histori", compact("cek"));
+    }
+
     public function create()
     {
         $supir = Supir::all();
@@ -29,6 +35,7 @@ class PengecekanMobilController extends Controller
             'mobil_id' => 'required',
             'tanggal_pengecekan' => 'required|date',
             'shift_pengecekan' => 'required',
+            'komentar' => 'required',
             'alarm' => 'required|boolean',
             'lampu_penerangan' => 'required|boolean',
             'lampu_rem' => 'required|boolean',
@@ -69,6 +76,7 @@ class PengecekanMobilController extends Controller
             'mobil_id' => $request->input('mobil_id'),
             'tanggal_pengecekan' => $request->input('tanggal_pengecekan'),
             'shift_pengecekan' => $request->input('shift_pengecekan'),
+            'komentar' => $request->input('komentar'),
             'alarm' => $request->input('alarm'),
             'lampu_penerangan' => $request->input('lampu_penerangan'),
             'lampu_rem' => $request->input('lampu_rem'),
@@ -99,6 +107,7 @@ class PengecekanMobilController extends Controller
             'mobil_id' => 'required',
             'tanggal_pengecekan' => 'required|date',
             'shift_pengecekan' => 'required',
+            'komentar' => 'required',
             'alarm' => 'required|boolean',
             'lampu_penerangan' => 'required|boolean',
             'lampu_rem' => 'required|boolean',
@@ -152,6 +161,7 @@ class PengecekanMobilController extends Controller
             'mobil_id' => $request->input('mobil_id'),
             'tanggal_pengecekan' => $request->input('tanggal_pengecekan'),
             'shift_pengecekan' => $request->input('shift_pengecekan'),
+            'komentar' => $request->input('komentar'),
             'alarm' => $request->input('alarm'),
             'lampu_penerangan' => $request->input('lampu_penerangan'),
             'lampu_rem' => $request->input('lampu_rem'),
@@ -179,7 +189,7 @@ class PengecekanMobilController extends Controller
     {
         $supir = Supir::all();
         $pengecekan = Pengecekan_Mobil::findOrFail($id);
-                $mobil = Mobil::where('status', 'aktif')->get();
+        $mobil = Mobil::where('status', 'aktif')->get();
 
         return view("pengecekan.view", compact("supir", "pengecekan", "mobil"));
     }

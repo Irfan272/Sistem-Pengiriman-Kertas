@@ -60,6 +60,8 @@
                                     </select>
                                 </div>
 
+
+
                                 <div class="form-group">
                                     <label for="tanggal_pengiriman">Tanggal Pengiriman</label>
                                     <input type="date" name="tanggal_pengiriman" class="form-control" required>
@@ -74,7 +76,8 @@
 
                                 <div class="form-group">
                                     <label for="jam_keluar">Jam Keluar</label>
-                                    <input type="time" id="jam_keluar" name="jam_keluar" class="form-control" required step="1">
+                                    <input type="time" id="jam_keluar" name="jam_keluar" class="form-control" required
+                                        step="1">
                                 </div>
 
                                 <hr>
@@ -125,23 +128,22 @@
                                     </select>
                                 </div>
 
-                            
+
                                 @if (Auth::guard('user')->user()->role == 'Kordinator Lapangan')
-                                <div class="form-group">
-                                    <label for="shift">Status Approval 1</label>
-                                    <select name="status_approval_1" class="form-control selectpicker" >
-                                        <option value="">Pilih Status</option>
-                                        <option value="Approve">Approve</option>
-                                        <option value="Reject">Reject</option>
-                                    </select>
-                                </div>
-                               
+                                    <div class="form-group">
+                                        <label for="shift">Status Approval 1</label>
+                                        <select name="status_approval_1" class="form-control selectpicker">
+                                            <option value="">Pilih Status</option>
+                                            <option value="Approve">Approve</option>
+                                            <option value="Reject">Reject</option>
+                                        </select>
+                                    </div>
 
-                                <div class="form-group">
-                                    <label for="remaks_1">Komentar Reviewer 1</label>
-                                    <input type="text" name="remaks_1" class="form-control" >
-                                </div>
 
+                                    <div class="form-group">
+                                        <label for="remaks_1">Komentar Reviewer 1</label>
+                                        <input type="text" name="remaks_1" class="form-control">
+                                    </div>
                                 @endif
 
 
@@ -158,20 +160,19 @@
 
 
                                 @if (Auth::guard('user')->user()->role == 'Kepala Bagian')
-                                <div class="form-group">
-                                    <label for="shift">Status Approval 2</label>
-                                    <select name="status_approval_2" class="form-control selectpicker" >
-                                        <option value="">Pilih Status</option>
-                                        <option value="Approve">Approve</option>
-                                        <option value="Reject">Reject</option>
-                                    </select>
-                                </div>
+                                    <div class="form-group">
+                                        <label for="shift">Status Approval 2</label>
+                                        <select name="status_approval_2" class="form-control selectpicker">
+                                            <option value="">Pilih Status</option>
+                                            <option value="Approve">Approve</option>
+                                            <option value="Reject">Reject</option>
+                                        </select>
+                                    </div>
 
-                                <div class="form-group">
-                                    <label for="remaks_2">Komentar Reviewer 2</label>
-                                    <input type="text" name="remaks_2" class="form-control" >
-                                </div>
-
+                                    <div class="form-group">
+                                        <label for="remaks_2">Komentar Reviewer 2</label>
+                                        <input type="text" name="remaks_2" class="form-control">
+                                    </div>
                                 @endif
 
                                 <div class="form-group mt-3">
@@ -261,7 +262,8 @@
                         data.forEach(function(pengecekan) {
                             let option = document.createElement('option');
                             option.value = pengecekan.id;
-                           option.text = (pengecekan.mobil?.plat_mobil || 'Tanpa plat') + ' (' + pengecekan.status + ')';
+                            option.text = (pengecekan.mobil?.plat_mobil || 'Tanpa plat') + ' (' + pengecekan
+                                .status + ')';
 
 
                             // Sesuaikan kalau nama field bukan 'status'

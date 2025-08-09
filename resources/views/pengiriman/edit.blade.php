@@ -90,6 +90,26 @@
                             </div>
 
                             <div class="form-group">
+                                <label for="status_pengiriman">Status Pengiriman</label>
+                                <select name="status_pengiriman" id="status_pengiriman" class="form-control selectpicker"
+                                    required>
+                                    <option value="">Pilih Status</option>                                  
+                                    <option value="Dalam Perjalanan"
+                                        {{ $pengiriman->status_pengiriman == 'Dalam Perjalanan' ? 'selected' : '' }}>Dalam
+                                        Perjalanan</option>
+                                    <option value="Terlambat"
+                                        {{ $pengiriman->status_pengiriman == 'Terlambat' ? 'selected' : '' }}>Terlambat
+                                    </option>
+                                    <option value="Terkirim"
+                                        {{ $pengiriman->status_pengiriman == 'Terkirim' ? 'selected' : '' }}>Terkirim
+                                    </option>
+                                    <option value="Gagal"
+                                        {{ $pengiriman->status_pengiriman == 'Gagal' ? 'selected' : '' }}>Gagal</option>
+                                </select>
+                            </div>
+
+
+                            <div class="form-group">
                                 <label for="tanggal_pengiriman">Tanggal Pengiriman</label>
                                 <input type="date" name="tanggal_pengiriman" class="form-control"
                                     value="{{ $pengiriman->tanggal_pengiriman }}" required
@@ -162,7 +182,8 @@
                             </table>
 
                             @if (Auth::guard('user')->user()->role == 'Operator')
-                                <button type="button" class="btn btn-primary" id="addRow">Tambah Detail Kertas</button>
+                                <button type="button" class="btn btn-primary" id="addRow">Tambah Detail
+                                    Kertas</button>
                             @endif
 
                             {{-- Reviewer 1 --}}
@@ -285,37 +306,38 @@
                 lokasiInput.value = '';
             }
         }
-function loadPengecekanMobil(supirId, selectedId = null) {
-    const pengecekanSelect = document.getElementById('pengecekan_mobil_id');
-    pengecekanSelect.innerHTML = '<option value="">Pilih Pengecekan Mobil</option>';
 
-    const url = new URL('/get-pengecekan-mobil', window.location.origin);
-    if (supirId) url.searchParams.append('supir_id', supirId);
+        function loadPengecekanMobil(supirId, selectedId = null) {
+            const pengecekanSelect = document.getElementById('pengecekan_mobil_id');
+            pengecekanSelect.innerHTML = '<option value="">Pilih Pengecekan Mobil</option>';
 
-    fetch(url)
-        .then(response => response.json())
-        .then(data => {
-            if (data.length) {
-                data.forEach(item => {
-                    const option = document.createElement('option');
-                    const platMobil = item.mobil?.plat_mobil || 'Plat tidak tersedia';
-                    option.value = item.id;
-                    option.text = `${platMobil} (${item.status})`;
+            const url = new URL('/get-pengecekan-mobil', window.location.origin);
+            if (supirId) url.searchParams.append('supir_id', supirId);
 
-                    if (selectedId && selectedId == item.id) {
-                        option.selected = true;
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.length) {
+                        data.forEach(item => {
+                            const option = document.createElement('option');
+                            const platMobil = item.mobil?.plat_mobil || 'Plat tidak tersedia';
+                            option.value = item.id;
+                            option.text = `${platMobil} (${item.status})`;
+
+                            if (selectedId && selectedId == item.id) {
+                                option.selected = true;
+                            }
+
+                            pengecekanSelect.appendChild(option);
+                        });
+                    } else {
+                        pengecekanSelect.innerHTML = '<option value="">Tidak ada pengecekan</option>';
                     }
 
-                    pengecekanSelect.appendChild(option);
-                });
-            } else {
-                pengecekanSelect.innerHTML = '<option value="">Tidak ada pengecekan</option>';
-            }
-
-            $('.selectpicker').selectpicker('refresh');
-        })
-        .catch(error => console.error('Error:', error));
-}
+                    $('.selectpicker').selectpicker('refresh');
+                })
+                .catch(error => console.error('Error:', error));
+        }
 
 
         function setCurrentTime() {

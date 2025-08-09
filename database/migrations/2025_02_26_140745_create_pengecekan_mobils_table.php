@@ -27,6 +27,7 @@ return new class extends Migration
             $table->integer('safety_belt');
             $table->string('bukti_video');
             $table->string('status');
+            $table->string('komentar')->nullable();
             $table->timestamps();
         });
     }

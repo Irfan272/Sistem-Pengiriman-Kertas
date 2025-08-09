@@ -66,6 +66,7 @@ Route::delete('/kertas/delete/{id}', [App\Http\Controllers\KertasController::cla
 
 // Pengecekan Mobil
 Route::get('/pengecekan', [App\Http\Controllers\PengecekanMobilController::class, 'index'])->name('pengecekan.index');
+Route::get('/pengecekan-histori', [App\Http\Controllers\PengecekanMobilController::class, 'indexHistory'])->name('pengecekan.histori');
 Route::get('/pengecekan/create', [App\Http\Controllers\PengecekanMobilController::class, 'create']);
 Route::post('/pengecekan/store', [App\Http\Controllers\PengecekanMobilController::class, 'store']);
 Route::get('/pengecekan/view/{id}', [App\Http\Controllers\PengecekanMobilController::class, 'view']);

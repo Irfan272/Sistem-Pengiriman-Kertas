@@ -24,7 +24,12 @@ class Pengiriman extends Model
         'user_2',
         'status_approval_2',
         'remaks_2',
-        'status'
+        'status',
+        'kerugian_terlambat',
+        'kerugian_duplikasi',
+        'total_kerugian',
+        'status_pengiriman'
+
     ];
 
     public function supir(){
